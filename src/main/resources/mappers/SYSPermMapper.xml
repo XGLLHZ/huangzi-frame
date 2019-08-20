@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.huangzi.frame.mapper.SYSPermMapper">
+
+    <!--获取数据列表-->
+    <select id="list" resultType="SYSPermission">
+        select
+        sysPerm.id,
+        sysPerm.parent_id,
+        sysPerm.perm_name,
+        sysPerm.perm_url,
+        sysPerm.delete_flag,
+        sysPerm.created_time,
+        sysPerm.update_time
+        from sys_permission sysPerm
+        where sysPerm.delete_flag = 0
+
+        <if test=" condition.permName != null and condition.permName != '' ">
+            and ( sysPerm.perm_name like '%${ condition.permName }%' or sysPerm.perm_url like '%${ condition.permName }%' )
+        </if>
+
+    </select>
+
+    <!--获取数据总数-->
+    <select id="total" resultType="Integer">
+        select
+          count(*)
+        from sys_permission sysPerm
+        where sysPerm.delete_flag = 0
+    </select>
+
+</mapper>
+
+
+
+

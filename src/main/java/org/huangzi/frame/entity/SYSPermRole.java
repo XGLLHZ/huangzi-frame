@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.huangzi.frame.util.BaseEntityUtil;
 
 import java.sql.Timestamp;
 
@@ -16,7 +17,7 @@ import java.sql.Timestamp;
 @Data
 @Accessors(chain = true)
 @TableName("sys_perm_role")
-public class SYSPermRole {
+public class SYSPermRole extends BaseEntityUtil {
 
     @TableId(type = IdType.AUTO)
     private Integer id;   //主键

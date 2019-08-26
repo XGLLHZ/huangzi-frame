@@ -10,7 +10,6 @@ import org.huangzi.frame.service.SYSUserService;
 import org.huangzi.frame.util.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,6 +56,21 @@ public class SYSUserServiceImpl implements SYSUserService {
     }
 
     @Override
+    public APIResponse login(SYSUser sysUser) {
+        SYSUser sysUser1 = sysUserMapper.getUserByName(sysUser.getUserAccount());
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        boolean checkPass = bCryptPasswordEncoder.matches(sysUser.getUserPass(), sysUser1.getPassword());
+        if (sysUser1 != null && checkPass) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("id", sysUser1.getId());
+            data.put("userAccount", sysUser1.getUserAccount());
+            return new APIResponse(data);
+        } else {
+            return new APIResponse(ConstConfig.RE_USERNAME_USERPWD_ERROR_CODE, ConstConfig.RE_USERNAME_USERPWD_ERROR_MESSAGE);
+        }
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         SYSUser sysUser = sysUserMapper.getUserByName(userName);
         if (sysUser == null) {
@@ -69,13 +83,16 @@ public class SYSUserServiceImpl implements SYSUserService {
     }
 
     /**
-     * 系统-用户-新增 -密码加密
+     * 系统-用户-新增 -密码加密、解密测试
      * @param args
      */
     public static void main(String[] args) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String password = bCryptPasswordEncoder.encode("123456");
+        String rawPass = "123456";
+        String password = bCryptPasswordEncoder.encode(rawPass);
         System.out.println("###" + password + "###");
+        boolean result = bCryptPasswordEncoder.matches(rawPass, password);
+        System.out.println(result);
     }
 
 }

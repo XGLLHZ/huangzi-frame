@@ -42,7 +42,17 @@ public class SYSUserController {
     }
 
     /**
-     * spring security返回登录提示
+     * 用户-登录
+     * @param sysUser
+     * @return
+     */
+    @RequestMapping("/login")
+    public APIResponse login(@RequestBody SYSUser sysUser) {
+        return sysUserService.login(sysUser);
+    }
+
+    /**
+     * spring security 返回登录提示
      * @return
      */
     @RequestMapping("/login_code")

@@ -25,4 +25,11 @@ public interface SYSUserService extends UserDetailsService {
      */
     APIResponse insert(SYSUser sysUser);
 
+    /**
+     * 登录
+     * @param sysUser
+     * @return
+     */
+    APIResponse login(SYSUser sysUser);
+
 }

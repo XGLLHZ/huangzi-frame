@@ -26,9 +26,9 @@ public class FrameApplication {
      * SpringBoot项目小知识
      *
      * 1、常量设置：
-     *    对于一些涉及到多环境的常量，比如关于datasource的参数，我们可以将其定义在 -prod 和 -dev 的yml文件中
-     *    然后创建一个类，一所有定义的常量名为属性，并将其设置成一个Bean，最后在@SpringBootConfigration注解
-     *    的类中使用@Value注解将其拿出。使用时只需要引入创建的类即可
+     *     对于一些涉及到多环境的常量，比如关于datasource的参数，我们可以将其定义在 -prod 和 -dev 的yml文件中
+     *     然后创建一个类，一所有定义的常量名为属性，并将其设置成一个Bean，最后在@SpringBootConfigration注解
+     *     的类中使用@Value注解将其拿出。使用时只需要引入创建的类即可
      *
      * 2、spring security 中的密码加密:
      *     BCryptPasswordEncoder：该类中提供了两个方法，encode 和 matches，即密码加密和密码匹配。

@@ -1,6 +1,5 @@
 package org.huangzi.frame.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.EmptyWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.huangzi.frame.config.ConstConfig;
 import org.huangzi.frame.entity.SYSRole;
@@ -21,7 +20,7 @@ import java.util.Map;
 /**
  * @author: XGLLHZ
  * @date: 2019/8/20 11:40
- * @description:
+ * @description: 系统-用户-事务层实现类
  */
 @Service
 public class SYSUserServiceImpl implements SYSUserService {
@@ -83,14 +82,14 @@ public class SYSUserServiceImpl implements SYSUserService {
     }
 
     /**
-     * 系统-用户-新增 -密码加密、解密测试
+     * 系统-用户-新增：密码加密、解密测试
      * @param args
      */
     public static void main(String[] args) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String rawPass = "123456";
         String password = bCryptPasswordEncoder.encode(rawPass);
-        System.out.println("###" + password + "###");
+        System.out.println("### " + password + " ###");
         boolean result = bCryptPasswordEncoder.matches(rawPass, password);
         System.out.println(result);
     }

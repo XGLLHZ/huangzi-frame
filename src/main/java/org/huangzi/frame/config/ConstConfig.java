@@ -35,4 +35,14 @@ public class ConstConfig {
     public static final Integer RE_PLEASE_LOGIN_FIRST_CODE = 105;
     public static final String RE_PLEASE_LOGIN_FIRST_MESSAGE = "请先登录！";
 
+    /*****************************基础业务*******************************/
+
+    //数据已存在
+    public static final Integer RE_ALREADY_EXIST_ERROR_CODE = 110;
+    public static final String RE_ALREADY_EXIST_ERROR_MESSAGE = "数据已存在！";
+
+    //数据不存在
+    public static final Integer RE_NO_EXIST_ERROR_CODE = 111;
+    public static final String RE_NO_EXIST_ERROR_MESSAGE = "数据不存在！";
+
 }

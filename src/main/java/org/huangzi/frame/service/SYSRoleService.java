@@ -17,4 +17,40 @@ public interface SYSRoleService {
      */
     APIResponse list(SYSRole sysRole);
 
+    /**
+     * 详情
+     * @param sysRole
+     * @return
+     */
+    APIResponse get(SYSRole sysRole);
+
+    /**
+     * 新增
+     * @param sysRole
+     * @return
+     */
+    APIResponse insert(SYSRole sysRole);
+
+    /**
+     * 删除
+     * @param sysRole
+     * @return
+     */
+    APIResponse delete(SYSRole sysRole);
+
+    /**
+     * 修改
+     * @param sysRole
+     * @return
+     */
+    APIResponse update(SYSRole sysRole);
+
+    /**
+     * 给角色添加权限
+     * @param roleId 角色id
+     * @param permIds 权限id数组
+     * @return
+     */
+    APIResponse insertRolePerm(int roleId, int[] permIds);
+
 }

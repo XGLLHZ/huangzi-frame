@@ -20,9 +20,65 @@ public class SYSRoleController {
     @Autowired
     SYSRoleService sysRoleService;
 
+    /**
+     * 获取数据列表
+     * @param sysRole
+     * @return
+     */
     @RequestMapping("/list")
     public APIResponse list(@RequestBody SYSRole sysRole) {
         return sysRoleService.list(sysRole);
+    }
+
+    /**
+     * 获取详情
+     * @param sysRole
+     * @return
+     */
+    @RequestMapping("/get")
+    public APIResponse get(@RequestBody SYSRole sysRole) {
+        return sysRoleService.get(sysRole);
+    }
+
+    /**
+     * 新增
+     * @param sysRole
+     * @return
+     */
+    @RequestMapping("/insert")
+    public APIResponse insert(@RequestBody SYSRole sysRole) {
+        return sysRoleService.list(sysRole);
+    }
+
+    /**
+     * 删除
+     * @param sysRole
+     * @return
+     */
+    @RequestMapping("/delete")
+    public APIResponse delete(@RequestBody SYSRole sysRole) {
+        return sysRoleService.delete(sysRole);
+    }
+
+    /**
+     * 修改
+     * @param sysRole
+     * @return
+     */
+    @RequestMapping("/update")
+    public APIResponse update(@RequestBody SYSRole sysRole) {
+        return sysRoleService.update(sysRole);
+    }
+
+    /**
+     * 给角色添加权限-批量
+     * @param roleId 角色id
+     * @param permIds 权限id数组
+     * @return
+     */
+    @RequestMapping("/addRolePerm")
+    public APIResponse insertRolePerm(int roleId, int[] permIds) {
+        return sysRoleService.insertRolePerm(roleId, permIds);
     }
 
 }

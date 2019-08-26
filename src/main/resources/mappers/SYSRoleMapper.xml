@@ -5,12 +5,12 @@
     <!--获取数据列表-->
     <select id="list" resultType="SYSRole">
         select
-        sysRole.id,
-        sysRole.role_namey,
-        sysRole.role_namez,
-        sysRole.delete_flag,
-        sysRole.created_time,
-        sysRole.update_time
+          sysRole.id,
+          sysRole.role_namey,
+          sysRole.role_namez,
+          sysRole.delete_flag,
+          sysRole.created_time,
+          sysRole.update_time
         from sys_role sysRole
         where sysRole.delete_flag = 0
 
@@ -26,6 +26,20 @@
           count(*)
         from sys_role sysRole
         where sysRole.delete_flag = 0
+    </select>
+
+    <!--根据角色英文名获取详情-->
+    <select id="getByRoleNamey" resultType="SYSRole">
+        select
+          sysRole.id,
+          sysRole.role_namey,
+          sysRole.role_namez,
+          sysRole.delete_flag,
+          sysRole.created_time,
+          sysRole.update_time
+        from sys_role sysRole
+        where sysRole.delete_flag = 0
+        and sysRole.role_namey = #{ condition }
     </select>
 
 </mapper>

@@ -19,6 +19,13 @@ public interface SYSUserService extends UserDetailsService {
     APIResponse list(SYSUser sysUser);
 
     /**
+     * 获取用户详情
+     * @param sysUser
+     * @return
+     */
+    APIResponse get(SYSUser sysUser);
+
+    /**
      * 新增-注册
      * @param sysUser
      * @return
@@ -31,5 +38,27 @@ public interface SYSUserService extends UserDetailsService {
      * @return
      */
     APIResponse login(SYSUser sysUser);
+
+    /**
+     * 删除
+     * @param sysUser
+     * @return
+     */
+    APIResponse delete(SYSUser sysUser);
+
+    /**
+     * 修改
+     * @param sysUser
+     * @return
+     */
+    APIResponse update(SYSUser sysUser);
+
+    /**
+     * 给用户绑定角色
+     * @param userId 用户Id
+     * @param roleIds 角色id数组
+     * @return
+     */
+    APIResponse userBindRole(int userId, int[] roleIds);
 
 }

@@ -20,9 +20,54 @@ public class SYSPermController {
     @Autowired
     SYSPermService sysPermService;
 
+    /**
+     * 获取数据列表
+     * @param sysPermission
+     * @return
+     */
     @RequestMapping("/list")
     public APIResponse list(@RequestBody SYSPermission sysPermission) {
         return sysPermService.list(sysPermission);
+    }
+
+    /**
+     * 详情
+     * @param sysPermission
+     * @return
+     */
+    @RequestMapping("/get")
+    public APIResponse get(@RequestBody SYSPermission sysPermission) {
+        return sysPermService.get(sysPermission);
+    }
+
+    /**
+     * 新增
+     * @param sysPermission
+     * @return
+     */
+    @RequestMapping("/insert")
+    public APIResponse insert(@RequestBody SYSPermission sysPermission) {
+        return sysPermService.insert(sysPermission);
+    }
+
+    /**
+     * 删除
+     * @param sysPermission
+     * @return
+     */
+    @RequestMapping("/delete")
+    public APIResponse delete(@RequestBody SYSPermission sysPermission) {
+        return sysPermService.delete(sysPermission);
+    }
+
+    /**
+     * 修改
+     * @param sysPermission
+     * @return
+     */
+    @RequestMapping("/update")
+    public APIResponse update(@RequestBody SYSPermission sysPermission) {
+        return sysPermService.update(sysPermission);
     }
 
 }

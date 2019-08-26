@@ -17,4 +17,32 @@ public interface SYSPermService {
      */
     APIResponse list(SYSPermission sysPermission);
 
+    /**
+     * 权限详情
+     * @param sysPermission
+     * @return
+     */
+    APIResponse get(SYSPermission sysPermission);
+
+    /**
+     * 新增
+     * @param sysPermission
+     * @return
+     */
+    APIResponse insert(SYSPermission sysPermission);
+
+    /**
+     * 删除
+     * @param sysPermission
+     * @return
+     */
+    APIResponse delete(SYSPermission sysPermission);
+
+    /**
+     * 修改
+     * @param sysPermission
+     * @return
+     */
+    APIResponse update(SYSPermission sysPermission);
+
 }

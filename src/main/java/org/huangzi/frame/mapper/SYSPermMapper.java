@@ -34,4 +34,11 @@ public interface SYSPermMapper extends BaseMapper<SYSPermission> {
      */
     List<SYSPermission> allUrlRole();
 
+    /**
+     * 根据权限即资源（url）获取详情
+     * @param permUrl
+     * @return
+     */
+    SYSPermission getByUrl(@Param("condition") String permUrl);
+
 }

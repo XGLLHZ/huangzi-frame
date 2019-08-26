@@ -28,4 +28,11 @@ public interface SYSRoleMapper extends BaseMapper<SYSRole> {
      */
     Integer total();
 
+    /**
+     * 根据角色英文名获取详情
+     * @param roleNamey
+     * @return
+     */
+    SYSRole getByRoleNamey(@Param("condition") String roleNamey);
+
 }

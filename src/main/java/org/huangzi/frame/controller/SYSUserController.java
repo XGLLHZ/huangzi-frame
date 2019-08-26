@@ -1,9 +1,13 @@
 package org.huangzi.frame.controller;
 
+import org.huangzi.frame.config.ConstConfig;
 import org.huangzi.frame.entity.SYSUser;
 import org.huangzi.frame.service.SYSUserService;
+import org.huangzi.frame.service.impl.SYSUserServiceImpl;
 import org.huangzi.frame.util.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,9 +24,33 @@ public class SYSUserController {
     @Autowired
     SYSUserService sysUserService;
 
+    /**
+     * 获取数据列表
+     * @param sysUser
+     * @return
+     */
     @RequestMapping("/list")
     public APIResponse list(@RequestBody SYSUser sysUser) {
         return sysUserService.list(sysUser);
+    }
+
+    /**
+     * 用户-新增-注册
+     * @param sysUser
+     * @return
+     */
+    @RequestMapping("/register")
+    public APIResponse insert(@RequestBody SYSUser sysUser) {
+        return sysUserService.insert(sysUser);
+    }
+
+    /**
+     * spring security返回登录提示
+     * @return
+     */
+    @RequestMapping("/login_code")
+    public APIResponse loginCode() {
+        return new APIResponse(ConstConfig.RE_PLEASE_LOGIN_FIRST_CODE, ConstConfig.RE_PLEASE_LOGIN_FIRST_MESSAGE);
     }
 
 }

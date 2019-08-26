@@ -7,10 +7,32 @@ package org.huangzi.frame.config;
  */
 public class ConstConfig {
 
-    /**
-     * 请求成功
-     */
+    /***************************基础请求************************************/
+
+    //请求成功
     public static final Integer RE_SUCCESS_CODE = 200;
     public static final String RE_SUCCESS_MESSAGE = "请求成功！";
+
+    /***************************登录、注册、注销相关*************************/
+
+    //登录失败---用户名或密码错误
+    public static final Integer RE_USERNAME_USERPWD_ERROR_CODE = 101;
+    public static final String RE_USERNAME_USERPWD_ERROR_MESSAGE = "用户名或密码错误！";
+
+    //登录失败---其它原因
+    public static final Integer RE_LOGIN_ERROR_CODE = 102;
+    public static final String RE_LOGIN_ERROR_MESSAGE = "登录失败！";
+
+    //访问失败---权限不足
+    public static final Integer RE_AUTHORITY_ERROR_CODE = 103;
+    public static final String RE_AUTHORITY_ERROR_MESSAGE = "权限不足！";
+
+    //注册失败-用户名已存在
+    public static final Integer RE_NAME_ALREADY_EXIST_ERROR_CODE = 104;
+    public static final String RE_NAME_ALREADY_EXIST_ERROR_MESSAGE = "用户名已存在！";
+
+    //请先登录
+    public static final Integer RE_PLEASE_LOGIN_FIRST_CODE = 105;
+    public static final String RE_PLEASE_LOGIN_FIRST_MESSAGE = "请先登录！";
 
 }

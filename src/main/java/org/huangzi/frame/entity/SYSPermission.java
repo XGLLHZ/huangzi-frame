@@ -1,6 +1,7 @@
 package org.huangzi.frame.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.experimental.Accessors;
 import org.huangzi.frame.util.BaseEntityUtil;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author: XGLLHZ
@@ -33,5 +35,8 @@ public class SYSPermission extends BaseEntityUtil {
     private Timestamp createdTime;   //创建时间
 
     private Timestamp updateTime;   //修改时间
+
+    @TableField(exist = false)
+    private List<SYSRole> roles;   //角色英文名
 
 }

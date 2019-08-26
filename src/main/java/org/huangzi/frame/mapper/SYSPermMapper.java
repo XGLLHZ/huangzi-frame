@@ -28,4 +28,10 @@ public interface SYSPermMapper extends BaseMapper<SYSPermission> {
      */
     Integer total();
 
+    /**
+     * 获取所有权限及其对应的角色
+     * @return
+     */
+    List<SYSPermission> allUrlRole();
+
 }

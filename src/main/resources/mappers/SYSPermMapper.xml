@@ -29,6 +29,31 @@
         where sysPerm.delete_flag = 0
     </select>
 
+    <!--获取所有权限及其对应的角色-->
+    <select id="allUrlRole" resultMap="BaseResultMap">
+        select
+          perm.id,
+          perm.perm_url,
+          sr.id as role_id,
+          sr.role_namey as role_namey
+        from sys_permission perm
+        left join sys_perm_role spr
+        on spr.perm_id = perm.id and spr.delete_flag = 0
+        left join sys_role sr
+        on sr.id = spr.role_id and sr.delete_flag = 0
+        where perm.delete_flag = 0
+    </select>
+
+    <!--这我也不知道是什么原理，总之就是这个做法好牛逼哦-->
+    <resultMap id="BaseResultMap" type="org.huangzi.frame.entity.SYSPermission">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="perm_url" property="permUrl" jdbcType="VARCHAR"/>
+        <collection property="roles" ofType="org.huangzi.frame.entity.SYSRole">
+            <id column="role_id" property="id"/>
+            <result column="role_namey" property="roleNamey"/>
+        </collection>
+    </resultMap>
+
 </mapper>
 
 

@@ -28,4 +28,11 @@ public interface SYSUserMapper extends BaseMapper<SYSUser> {
      */
     Integer total();
 
+    /**
+     * 根据用户名获取用户信息
+     * @param userAccount
+     * @return
+     */
+    SYSUser getUserByName(@Param("condition") String userAccount);
+
 }

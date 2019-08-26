@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author: XGLLHZ
  * @date: 2019/8/20 12:16
- * @description: 系统-用户前端控制器
+ * @description: 系统-用户-前端控制器
  */
 @RestController
 @RequestMapping("/admin/user")

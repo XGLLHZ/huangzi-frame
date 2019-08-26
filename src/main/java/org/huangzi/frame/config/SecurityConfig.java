@@ -50,6 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //获取当前登录用户，并用用户添加时的加密规则对用户密码解密（之前的加密规则已被 spring security 抛弃）
+        //注：用户新增（即注册）时，需要对用户密码用 BCryptPasswordEncoder 类中的方法加密
         auth.userDetailsService(sysUserService)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
@@ -64,25 +66,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         o.setAccessDecisionManager(urlRoleAccessDecisionManager);
                         return o;
                     }
-                }).and().formLogin()/*
-                .loginPage("/admin/user/login_code")
-                .loginProcessingUrl("/admin/user/login")*/
-                .usernameParameter("userAccount")
-                .passwordParameter("userPass")
-                .failureHandler(new AuthenticationFailureHandler() {
+                }).and().formLogin()
+                .loginPage("/admin/user/login_code")   //在此接口中系统会返回一个 recode（105），前端根此返回码跳转到登录页
+                .loginProcessingUrl("/admin/user/login")   //登录接口
+                .usernameParameter("userAccount")   //系统-用户实体中的用户账号属性
+                .passwordParameter("userPass")   //系统-用户实体中的密码账号属性
+                .failureHandler(new AuthenticationFailureHandler() {   //授权或决策失败时
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest request,
                                                         HttpServletResponse response,
                                                         AuthenticationException e) throws IOException, ServletException {
                         response.setContentType("application/json;charset=utf-8");
                         APIResponse apiResponse = new APIResponse();
+                        //用户名或密码错误时返回 101
                         if (e instanceof UsernameNotFoundException || e instanceof BadCredentialsException) {
                             apiResponse.setRecode(ConstConfig.RE_USERNAME_USERPWD_ERROR_CODE);
                             apiResponse.setRemsg(ConstConfig.RE_USERNAME_USERPWD_ERROR_MESSAGE);
-                        } else {
+                        } else {   //其它异常时返回 102
                             apiResponse.setRecode(ConstConfig.RE_LOGIN_ERROR_CODE);
                             apiResponse.setRemsg(ConstConfig.RE_LOGIN_ERROR_MESSAGE);
                         }
+                        //ObjectMapper为阿里推出的 jackson 依赖中的类，可将对象转化为字符串
                         ObjectMapper objectMapper = new ObjectMapper();
                         PrintWriter out = response.getWriter();
                         out.write(objectMapper.writeValueAsString(apiResponse));
@@ -90,12 +94,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         out.close();
                     }
                 })
-                .successHandler(new AuthenticationSuccessHandler() {
+                .successHandler(new AuthenticationSuccessHandler() {   //授权或决策成功时
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request,
                                                         HttpServletResponse response,
                                                         Authentication authentication) throws IOException, ServletException {
                         response.setContentType("application/json;charset=utf-8");
+                        //将用户信息返回
                         SYSUser sysUser = SYSUserUtil.getCurrentUser();
                         Map<String, Object> data = new HashMap<>();
                         data.put("id", sysUser.getId());

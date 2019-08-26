@@ -45,8 +45,10 @@ public class SYSUser extends BaseEntityUtil implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (SYSRole role : list) {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleNamey()));
+        if (list != null) {
+            for (SYSRole role : list) {
+                authorities.add(new SimpleGrantedAuthority(role.getRoleNamey()));
+            }
         }
         return authorities;
     }

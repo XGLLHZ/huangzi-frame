@@ -27,13 +27,16 @@ public class FilterRequestRole implements FilterInvocationSecurityMetadataSource
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
+        //获取请求地址，如：admin/user/list
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
         if ("/admin/user/login".equals(requestUrl)) {
             return null;
         }
+        //获取所有权限（数据库中所有的url）及其对应的角色列表
         List<SYSPermission> list = sysPermMapper.allUrlRole();
         AntPathMatcher antPathMatcher = new AntPathMatcher();
         for (SYSPermission sysPermission : list) {
+            //match()方法可以比较地址是否相同
             if (antPathMatcher.match(sysPermission.getPermUrl(), requestUrl)) {
                 List<SYSRole> sysPermissionList = sysPermission.getRoles();
                 String[] roleArrays = new String[sysPermissionList.size()];
@@ -43,6 +46,7 @@ public class FilterRequestRole implements FilterInvocationSecurityMetadataSource
                 return SecurityConfig.createList(roleArrays);
             }
         }
+        //没有匹配上的地址则单独创建一个登录 的角色集合（实际上没有这个角色），后面会对这个角色单独处理
         return SecurityConfig.createList("LOGIN_ROLE");
     }
 

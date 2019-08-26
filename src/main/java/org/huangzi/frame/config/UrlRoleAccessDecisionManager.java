@@ -16,11 +16,19 @@ import java.util.Iterator;
 /**
  * @author: XGLLHZ
  * @date: 2019/8/22 22:33
- * @description: 权限决策
+ * @description: 权限决策：
  */
 @Component
 public class UrlRoleAccessDecisionManager implements AccessDecisionManager {
 
+    /**
+     * 根据用户账号所具有的角色与请求该地址所需要的角色对比，判断用户是否有权限
+     * @param authentication 用户所具有的角色列表
+     * @param o
+     * @param collection 请求该资源（地址/权限）所需要的角色列表
+     * @throws AccessDeniedException
+     * @throws InsufficientAuthenticationException
+     */
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection)
             throws AccessDeniedException, InsufficientAuthenticationException {
@@ -28,6 +36,7 @@ public class UrlRoleAccessDecisionManager implements AccessDecisionManager {
         while (iterator.hasNext()) {
             ConfigAttribute configuration = iterator.next();
             String requestRole = configuration.getAttribute();
+            //如果角色为 LOGIN_ROLE ，则说明当前的请求不需要任何角色，所以直接放过
             if ("LOGIN_ROLE".equals(requestRole)) {
                 /*if (authentication instanceof AnonymousAuthenticationToken) {
                     throw new BadCredentialsException("请先登录！");

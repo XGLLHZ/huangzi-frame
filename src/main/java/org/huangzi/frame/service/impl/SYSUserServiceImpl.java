@@ -3,6 +3,7 @@ package org.huangzi.frame.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.EmptyWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.huangzi.frame.config.ConstConfig;
+import org.huangzi.frame.entity.SYSRole;
 import org.huangzi.frame.entity.SYSUser;
 import org.huangzi.frame.mapper.SYSUserMapper;
 import org.huangzi.frame.service.SYSUserService;
@@ -56,14 +57,21 @@ public class SYSUserServiceImpl implements SYSUserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        SYSUser sysUser = sysUserMapper.getUserByName(s);
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        SYSUser sysUser = sysUserMapper.getUserByName(userName);
         if (sysUser == null) {
             throw new UsernameNotFoundException("用户名不存在！");
+        } else {
+            List<SYSRole> list = sysUserMapper.userRoleList(sysUser.getId());
+            sysUser.setList(list);
         }
         return sysUser;
     }
 
+    /**
+     * 系统-用户-新增 -密码加密
+     * @param args
+     */
     public static void main(String[] args) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String password = bCryptPasswordEncoder.encode("123456");

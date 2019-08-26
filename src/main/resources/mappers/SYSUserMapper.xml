@@ -28,6 +28,7 @@
         where sysUser.delete_flag = 0
     </select>
 
+    <!--根据用户名获取用户信息-->
     <select id="getUserByName" resultType="SYSUser">
         select
           sysUser.id,
@@ -39,6 +40,23 @@
         from sys_user sysUser
         where sysUser.delete_flag = 0
         and sysUser.user_account = #{ condition }
+    </select>
+
+    <!--根据用户id获取用户角色列表-->
+    <select id="userRoleList" resultType="SYSRole">
+        select
+          sysRole.id,
+          sysRole.role_namey,
+          sysRole.role_namez
+        from sys_user sysUser
+        left join sys_user_role userRole
+        on sysUser.id = userRole.user_id
+        and userRole.delete_flag = 0
+        left join sys_role sysRole
+        on userRole.role_id = sysRole.id
+        and sysRole.delete_flag = 0
+        where sysUser.delete_flag = 0
+        and sysUser.id = #{ condition }
     </select>
 
 </mapper>

@@ -1,12 +1,13 @@
 package org.huangzi.frame.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.huangzi.frame.config.ConstConfig;
 import org.huangzi.frame.entity.SYSRole;
 import org.huangzi.frame.entity.SYSUser;
 import org.huangzi.frame.entity.SYSUserRole;
 import org.huangzi.frame.mapper.SYSUserMapper;
-import org.huangzi.frame.mapper.SYSUserRoleMapper;
+import org.huangzi.frame.service.SYSUserRoleService;
 import org.huangzi.frame.service.SYSUserService;
 import org.huangzi.frame.util.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,12 @@ import java.util.Map;
  * @description: 系统-用户-事务层实现类
  */
 @Service
-public class SYSUserServiceImpl implements SYSUserService {
+public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> implements SYSUserService {
 
     @Autowired
     SYSUserMapper sysUserMapper;
 
-    @Autowired
-    SYSUserRoleMapper sysUserRoleMapper;
+    SYSUserRoleService sysUserRoleService;
 
     @Override
     public APIResponse list(SYSUser sysUser) {
@@ -117,8 +117,12 @@ public class SYSUserServiceImpl implements SYSUserService {
             sysUserRole.setUserId(userId);
             sysUserRole.setRoleId(roleId);
         }
-        //在这里批量插入，方法还未研究出来
-        return null;
+        boolean res = sysUserRoleService.saveBatch(list, 30);
+        if (res) {
+            return new APIResponse();
+        } else {
+            return new APIResponse(ConstConfig.RE_ERROR_CODE, ConstConfig.RE_ERROR_MESSAGE);
+        }
     }
 
     @Override

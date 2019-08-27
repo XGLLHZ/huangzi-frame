@@ -13,6 +13,10 @@ public class ConstConfig {
     public static final Integer RE_SUCCESS_CODE = 200;
     public static final String RE_SUCCESS_MESSAGE = "请求成功！";
 
+    //请求失败
+    public static final Integer RE_ERROR_CODE = 201;
+    public static final String RE_ERROR_MESSAGE = "请求失败！";
+
     /***************************登录、注册、注销相关*************************/
 
     //登录失败---用户名或密码错误

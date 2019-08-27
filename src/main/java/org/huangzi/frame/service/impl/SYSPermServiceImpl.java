@@ -1,6 +1,7 @@
 package org.huangzi.frame.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.huangzi.frame.config.ConstConfig;
 import org.huangzi.frame.entity.SYSPermission;
 import org.huangzi.frame.mapper.SYSPermMapper;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @description:
  */
 @Service
-public class SYSPermServiceImpl implements SYSPermService {
+public class SYSPermServiceImpl extends ServiceImpl<SYSPermMapper, SYSPermission> implements SYSPermService {
 
     @Autowired
     SYSPermMapper sysPermMapper;

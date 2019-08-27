@@ -39,6 +39,9 @@ public class FrameApplication {
      *     却是 true。
      *     注：在密码传输的过程中使用 bcrypt.js 加密（也就是从前端传到后台时），因为 BCryptPasswordEncoder
      *     内部采用应该是相同的算法吧！
+     *
+     * 3、注解@Autowired：没有实现类的接口不能用此注解
+     *
      */
 
 }

@@ -1,5 +1,6 @@
 package org.huangzi.frame.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.huangzi.frame.entity.SYSRole;
 import org.huangzi.frame.util.APIResponse;
 
@@ -8,7 +9,7 @@ import org.huangzi.frame.util.APIResponse;
  * @date: 2019/8/20 11:37
  * @description: 系统-角色事务层
  */
-public interface SYSRoleService {
+public interface SYSRoleService extends IService<SYSRole> {
 
     /**
      * 获取数据列表

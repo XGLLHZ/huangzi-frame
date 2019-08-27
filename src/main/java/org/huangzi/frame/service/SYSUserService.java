@@ -1,5 +1,6 @@
 package org.huangzi.frame.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.huangzi.frame.entity.SYSUser;
 import org.huangzi.frame.util.APIResponse;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @date: 2019/8/20 11:34
  * @description: 系统-用户事务层
  */
-public interface SYSUserService extends UserDetailsService {
+public interface SYSUserService extends UserDetailsService, IService<SYSUser> {
 
     /**
      * 获取数据列表

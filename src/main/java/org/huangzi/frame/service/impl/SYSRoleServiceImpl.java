@@ -1,11 +1,12 @@
 package org.huangzi.frame.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.huangzi.frame.config.ConstConfig;
 import org.huangzi.frame.entity.SYSPermRole;
 import org.huangzi.frame.entity.SYSRole;
-import org.huangzi.frame.mapper.SYSPermRoleMapper;
 import org.huangzi.frame.mapper.SYSRoleMapper;
+import org.huangzi.frame.service.SYSPermRoleService;
 import org.huangzi.frame.service.SYSRoleService;
 import org.huangzi.frame.util.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,12 @@ import java.util.Map;
  * @description:
  */
 @Service
-public class SYSRoleServiceImpl implements SYSRoleService {
+public class SYSRoleServiceImpl extends ServiceImpl<SYSRoleMapper, SYSRole> implements SYSRoleService {
 
     @Autowired
     SYSRoleMapper sysRoleMapper;
 
-    @Autowired
-    SYSPermRoleMapper sysPermRoleMapper;
+    SYSPermRoleService sysPermRoleService;
 
     @Override
     public APIResponse list(SYSRole sysRole) {
@@ -94,8 +94,12 @@ public class SYSRoleServiceImpl implements SYSRoleService {
             sysPermRole.setRoleId(roleId);
             sysPermRole.setPermId(permId);
         }
-        //在这里批量插入，方法还为完成
-        return null;
+        boolean res = sysPermRoleService.saveBatch(list, 30);
+        if (res) {
+            return new APIResponse();
+        } else {
+            return new APIResponse(ConstConfig.RE_ERROR_CODE, ConstConfig.RE_ERROR_MESSAGE);
+        }
     }
 
 }

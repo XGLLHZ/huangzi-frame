@@ -1,5 +1,6 @@
 package org.huangzi.frame.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.huangzi.frame.entity.SYSPermission;
 import org.huangzi.frame.util.APIResponse;
 
@@ -8,7 +9,7 @@ import org.huangzi.frame.util.APIResponse;
  * @date: 2019/8/20 11:38
  * @description: 系统-权限事务层
  */
-public interface SYSPermService {
+public interface SYSPermService extends IService<SYSPermission> {
 
     /**
      * 获取数据列表

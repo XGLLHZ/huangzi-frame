@@ -103,8 +103,8 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
         boolean checkPass = bCryptPasswordEncoder.matches(sysUser.getUserPass(), sysUser1.getPassword());
         if (sysUser1 != null && checkPass) {
             Map<String, Object> data = new HashMap<>();
-            data.put("id", sysUser1.getId());
-            data.put("userAccount", sysUser1.getUserAccount());
+            sysUser1.setUserPass("");
+            data.put("dataInfo", sysUser1);
             return new APIResponse(data);
         } else {
             return new APIResponse(ConstConfig.RE_USERNAME_USERPWD_ERROR_CODE, ConstConfig.RE_USERNAME_USERPWD_ERROR_MESSAGE);

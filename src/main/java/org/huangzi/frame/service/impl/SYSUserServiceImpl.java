@@ -148,23 +148,6 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
     }
 
     @Override
-    public APIResponse userBindRole(int userId, int[] roleIds) {
-        List<SYSUserRole> list = new ArrayList<>();
-        for (int roleId : roleIds) {
-            SYSUserRole sysUserRole = new SYSUserRole();
-            sysUserRole.setUserId(userId);
-            sysUserRole.setRoleId(roleId);
-            list.add(sysUserRole);
-        }
-        boolean res = sysUserRoleService.saveBatch(list, 30);
-        if (res) {
-            return new APIResponse();
-        } else {
-            return new APIResponse(ConstConfig.RE_ERROR_CODE, ConstConfig.RE_ERROR_MESSAGE);
-        }
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         SYSUser sysUser = sysUserMapper.selectOne(
                 new QueryWrapper<SYSUser>().eq("user_account", userName));

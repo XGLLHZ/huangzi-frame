@@ -90,15 +90,4 @@ public class SYSUserController {
         return sysUserService.update(sysUser);
     }
 
-    /**
-     * 给用户绑定角色
-     * @param userId 用户id
-     * @param roleIds 角色id数组
-     * @return
-     */
-    @RequestMapping("/userBindRole")
-    public APIResponse userBindRole(int userId, int[] roleIds) {
-        return sysUserService.userBindRole(userId, roleIds);
-    }
-
 }

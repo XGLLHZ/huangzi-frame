@@ -54,12 +54,4 @@ public interface SYSUserService extends UserDetailsService, IService<SYSUser> {
      */
     APIResponse update(SYSUser sysUser);
 
-    /**
-     * 给用户绑定角色
-     * @param userId 用户Id
-     * @param roleIds 角色id数组
-     * @return
-     */
-    APIResponse userBindRole(int userId, int[] roleIds);
-
 }

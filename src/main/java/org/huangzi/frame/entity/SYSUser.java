@@ -40,6 +40,9 @@ public class SYSUser extends BaseEntityUtil implements UserDetails {
     private Timestamp updateTime;   //修改时间
 
     @TableField(exist = false)
+    private int[] roleIds;   //用户对应的角色id数组
+
+    @TableField(exist = false)
     private List<SYSRole> list;   //用户所具有的角色
 
     @Override

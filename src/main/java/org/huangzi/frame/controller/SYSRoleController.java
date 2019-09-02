@@ -66,19 +66,8 @@ public class SYSRoleController {
      * @return
      */
     @RequestMapping("/update")
-    public APIResponse update(@RequestBody SYSRole sysRole) {
+    public APIResponse update(SYSRole sysRole) {
         return sysRoleService.update(sysRole);
-    }
-
-    /**
-     * 给角色添加权限-批量
-     * @param roleId 角色id
-     * @param permIds 权限id数组
-     * @return
-     */
-    @RequestMapping("/addRolePerm")
-    public APIResponse insertRolePerm(int roleId, int[] permIds) {
-        return sysRoleService.insertRolePerm(roleId, permIds);
     }
 
 }

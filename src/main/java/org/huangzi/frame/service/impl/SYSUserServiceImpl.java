@@ -1,5 +1,6 @@
 package org.huangzi.frame.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.huangzi.frame.config.ConstConfig;
@@ -7,6 +8,7 @@ import org.huangzi.frame.entity.SYSRole;
 import org.huangzi.frame.entity.SYSUser;
 import org.huangzi.frame.entity.SYSUserRole;
 import org.huangzi.frame.mapper.SYSUserMapper;
+import org.huangzi.frame.mapper.SYSUserRoleMapper;
 import org.huangzi.frame.service.SYSUserRoleService;
 import org.huangzi.frame.service.SYSUserService;
 import org.huangzi.frame.util.APIResponse;
@@ -32,6 +34,9 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
     @Autowired
     SYSUserMapper sysUserMapper;
 
+    @Autowired
+    SYSUserRoleMapper sysUserRoleMapper;
+
     SYSUserRoleService sysUserRoleService;
 
     @Override
@@ -50,7 +55,9 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
         SYSUser sysUser1 = sysUserMapper.selectById(sysUser.getId());
         if (sysUser1 != null) {
             Map<String, Object> data = new HashMap<>();
-            data.put("info", sysUser1);
+            List<SYSRole> list = sysUserMapper.userRoleList(sysUser.getId());
+            data.put("dataInfo", sysUser1);
+            data.put("dataList", list);
             return new APIResponse(data);
         } else {
             return new APIResponse(ConstConfig.RE_NO_EXIST_ERROR_CODE, ConstConfig.RE_NO_EXIST_ERROR_MESSAGE);
@@ -59,7 +66,8 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
 
     @Override
     public APIResponse insert(SYSUser sysUser) {
-        SYSUser sysUser1 = sysUserMapper.getUserByName(sysUser.getUserAccount());
+        SYSUser sysUser1 = sysUserMapper.selectOne(
+                new QueryWrapper<SYSUser>().eq("user_account", sysUser.getUserAccount()));
         if (sysUser1 != null) {
             return new APIResponse(ConstConfig.RE_NAME_ALREADY_EXIST_ERROR_CODE,
                     ConstConfig.RE_NAME_ALREADY_EXIST_ERROR_MESSAGE);
@@ -68,13 +76,29 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
             String password = bCryptPasswordEncoder.encode(sysUser.getUserPass());
             sysUser.setUserPass(password);
             sysUserMapper.insert(sysUser);
+            List<SYSUserRole> list = new ArrayList<>();
+            if (sysUser.getRoleIds() != null && sysUser.getRoleIds().length > 0) {
+                for (int roleId : sysUser.getRoleIds()) {
+                    SYSUserRole sysUserRole = new SYSUserRole();
+                    sysUserRole.setUserId(sysUser.getId());
+                    sysUserRole.setRoleId(roleId);
+                    list.add(sysUserRole);
+                }
+                boolean res = sysUserRoleService.saveBatch(list);
+                if (res) {
+                    return new APIResponse();
+                } else {
+                    return new APIResponse(ConstConfig.RE_ERROR_CODE, ConstConfig.RE_ERROR_MESSAGE);
+                }
+            }
             return new APIResponse();
         }
     }
 
     @Override
     public APIResponse login(SYSUser sysUser) {
-        SYSUser sysUser1 = sysUserMapper.getUserByName(sysUser.getUserAccount());
+        SYSUser sysUser1 = sysUserMapper.selectOne(
+                new QueryWrapper<SYSUser>().eq("user_account", sysUser.getUserAccount()));
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         boolean checkPass = bCryptPasswordEncoder.matches(sysUser.getUserPass(), sysUser1.getPassword());
         if (sysUser1 != null && checkPass) {
@@ -91,7 +115,21 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
     public APIResponse delete(SYSUser sysUser) {
         SYSUser sysUser1 = sysUserMapper.selectById(sysUser.getId());
         if (sysUser1 != null) {
-            sysUserMapper.deleteById(sysUser.getId());
+            sysUser1.setDeleteFlag(ConstConfig.DELETE_FLAG_ONE);
+            sysUserMapper.updateById(sysUser1);
+            List<SYSUserRole> list = sysUserRoleMapper.selectList(
+                    new QueryWrapper<SYSUserRole>().eq("user_id", sysUser.getId()));
+            if (list != null && list.size() > 0) {
+                for (SYSUserRole sysUserRole : list) {
+                    sysUserRole.setDeleteFlag(ConstConfig.DELETE_FLAG_ONE);
+                }
+                boolean res = sysUserRoleService.updateBatchById(list);
+                if (res) {
+                    return new APIResponse();
+                } else {
+                    return new APIResponse(ConstConfig.RE_ERROR_CODE, ConstConfig.RE_ERROR_MESSAGE);
+                }
+            }
             return new APIResponse();
         } else {
             return new APIResponse(ConstConfig.RE_NO_EXIST_ERROR_CODE, ConstConfig.RE_NO_EXIST_ERROR_MESSAGE);
@@ -116,6 +154,7 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
             SYSUserRole sysUserRole = new SYSUserRole();
             sysUserRole.setUserId(userId);
             sysUserRole.setRoleId(roleId);
+            list.add(sysUserRole);
         }
         boolean res = sysUserRoleService.saveBatch(list, 30);
         if (res) {
@@ -127,12 +166,13 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        SYSUser sysUser = sysUserMapper.getUserByName(userName);
-        if (sysUser == null) {
-            throw new UsernameNotFoundException("用户名不存在！");
-        } else {
+        SYSUser sysUser = sysUserMapper.selectOne(
+                new QueryWrapper<SYSUser>().eq("user_account", userName));
+        if (sysUser != null) {
             List<SYSRole> list = sysUserMapper.userRoleList(sysUser.getId());
             sysUser.setList(list);
+        } else {
+            throw new UsernameNotFoundException("用户名不存在！");
         }
         return sysUser;
     }

@@ -3,6 +3,7 @@ package org.huangzi.frame.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
+import org.huangzi.frame.entity.SYSPermission;
 import org.huangzi.frame.entity.SYSRole;
 
 import java.util.List;
@@ -29,10 +30,10 @@ public interface SYSRoleMapper extends BaseMapper<SYSRole> {
     Integer total();
 
     /**
-     * 根据角色英文名获取详情
-     * @param roleNamey
+     * 根据角色id获取其对应的权限列表
+     * @param roleId
      * @return
      */
-    SYSRole getByRoleNamey(@Param("condition") String roleNamey);
+    List<SYSPermission> permRoleList(@Param("condition") int roleId);
 
 }

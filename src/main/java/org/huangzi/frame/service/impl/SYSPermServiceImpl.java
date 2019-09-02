@@ -40,7 +40,7 @@ public class SYSPermServiceImpl extends ServiceImpl<SYSPermMapper, SYSPermission
     public APIResponse get(SYSPermission sysPermission) {
         SYSPermission sysPermission1 = sysPermMapper.selectById(sysPermission.getId());
         Map<String, Object> data = new HashMap<>();
-        data.put("info", sysPermission1);
+        data.put("dataInfo", sysPermission1);
         return new APIResponse(data);
     }
 
@@ -59,7 +59,8 @@ public class SYSPermServiceImpl extends ServiceImpl<SYSPermMapper, SYSPermission
     public APIResponse delete(SYSPermission sysPermission) {
         SYSPermission sysPermission1 = sysPermMapper.selectById(sysPermission.getId());
         if (sysPermission1 != null) {
-            sysPermMapper.deleteById(sysPermission.getId());
+            sysPermission1.setDeleteFlag(ConstConfig.DELETE_FLAG_ONE);
+            sysPermMapper.updateById(sysPermission1);
             return new APIResponse();
         } else {
             return new APIResponse(ConstConfig.RE_NO_EXIST_ERROR_CODE, ConstConfig.RE_NO_EXIST_ERROR_MESSAGE);

@@ -7,6 +7,13 @@ package org.huangzi.frame.config;
  */
 public class ConstConfig {
 
+    /***************************逻辑删除************************************/
+
+    //未删除
+    public static final Integer DELETE_FLAG_ZONE = 0;
+    //已删除
+    public static final Integer DELETE_FLAG_ONE = 1;
+
     /***************************基础请求************************************/
 
     //请求成功

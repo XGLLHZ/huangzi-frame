@@ -16,10 +16,10 @@ public class FrameApplication {
      * SpringBoot项目启动类备注
      *
      * SpringBoot启动类：文件只要加上@SpringBootApplication注解，就是启动类
-     * @SpringBootApplication 注解可以用一下三个注解代替
-     * @SpringBootConfigration： 表示SpringBoot的配置注解
-     * @EnableAutoConfigration： 表示自动配置
-     * @ComponentScan： 表示SpringBoot扫描Bean的规则，比如扫描那些包
+     * SpringBootApplication注解： 注解可以用一下三个注解代替
+     * SpringBootConfigration注解： 表示SpringBoot的配置注解
+     * EnableAutoConfigration注解： 表示自动配置
+     * ComponentScan： 表示SpringBoot扫描Bean的规则，比如扫描那些包
      */
 
     /**
@@ -41,6 +41,9 @@ public class FrameApplication {
      *     内部采用应该是相同的算法吧！
      *
      * 3、注解@Autowired：没有实现类的接口不能用此注解
+     *
+     * 4、版本变化：mybatis plus 2.0版本：EntityWrapper
+     *             mybatis plus 3.0版本：QueryWrapper
      *
      */
 

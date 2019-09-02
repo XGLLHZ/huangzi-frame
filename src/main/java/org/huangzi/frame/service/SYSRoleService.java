@@ -46,12 +46,4 @@ public interface SYSRoleService extends IService<SYSRole> {
      */
     APIResponse update(SYSRole sysRole);
 
-    /**
-     * 给角色添加权限
-     * @param roleId 角色id
-     * @param permIds 权限id数组
-     * @return
-     */
-    APIResponse insertRolePerm(int roleId, int[] permIds);
-
 }

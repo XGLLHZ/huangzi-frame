@@ -11,6 +11,7 @@ import org.huangzi.frame.entity.SYSUserRole;
 import org.huangzi.frame.mapper.SYSTokenMapper;
 import org.huangzi.frame.mapper.SYSUserMapper;
 import org.huangzi.frame.mapper.SYSUserRoleMapper;
+import org.huangzi.frame.service.SYSTokenService;
 import org.huangzi.frame.service.SYSUserRoleService;
 import org.huangzi.frame.service.SYSUserService;
 import org.huangzi.frame.util.APIResponse;
@@ -37,11 +38,12 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
     @Autowired
     SYSUserMapper sysUserMapper;
 
-    @Autowired
-    SYSUserRoleMapper sysUserRoleMapper;
 
     @Autowired
     SYSTokenMapper sysTokenMapper;
+
+    @Autowired
+    SYSTokenService sysTokenService;
 
     SYSUserRoleService sysUserRoleService;
 
@@ -110,7 +112,7 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
         if (sysUser1 != null && checkPass) {
 
             //登录判断成功时 创建或者修改token
-            String token = TokenUtil.createJWS(String.valueOf(sysUser1.getId()));
+            String token = sysTokenService.createToken(sysUser1.getId());
             SYSToken sysToken = sysTokenMapper.selectOne(
                     new QueryWrapper<SYSToken>().eq("user_id", sysUser1.getId()));
             if (sysToken != null) {   //若此用户有过登录历史，则为其更新token

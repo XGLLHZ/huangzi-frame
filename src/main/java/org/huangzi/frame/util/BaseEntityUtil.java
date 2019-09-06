@@ -19,4 +19,7 @@ public class BaseEntityUtil {
     @TableField(exist = false)
     private Integer pageSize = 10;   //分页参数：页面大小，默认为10
 
+    @TableField(exist = false)
+    private String token;   //token
+
 }

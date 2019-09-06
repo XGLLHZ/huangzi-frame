@@ -15,7 +15,6 @@ import org.huangzi.frame.service.SYSTokenService;
 import org.huangzi.frame.service.SYSUserRoleService;
 import org.huangzi.frame.service.SYSUserService;
 import org.huangzi.frame.util.APIResponse;
-import org.huangzi.frame.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,6 +37,8 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
     @Autowired
     SYSUserMapper sysUserMapper;
 
+    @Autowired
+    SYSUserRoleMapper sysUserRoleMapper;
 
     @Autowired
     SYSTokenMapper sysTokenMapper;

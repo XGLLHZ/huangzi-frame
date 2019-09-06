@@ -13,6 +13,19 @@ public class FrameApplication {
     }
 
     /**
+     * 关于微服务：
+     *      微服务架构是一项在云中部署应用和服务的新技术。大部分围绕微服务的争论都集中在容器或
+     *      其他技术是否能很好的实施微服务，而红帽说 API 应该是重点。
+     *      微服务可以在“自己的程序”中运行，并通过“轻量级设备与 HTTP 型 API 进行沟通”。关键在
+     *      于该服务可以在自己的程序中运行。通过这一点我们就可以将服务公开与微服务架构（在现有
+     *      系统中分布一个 API）区分开来。在服务公开中，许多服务都可以被内部独立进程所限制。如
+     *      果其中任何一个服务需要增加某种功能，那么就必须缩小进程范围。在微服务架构中，只需要
+     *      在特定的某种服务中增加所需功能，而不影响整体进程。
+     *      微服务的核心是 API，在一个大型系统中，我们可以将其拆分为一个个的子模块，每一个模块
+     *      就可以是一个服务，各服务之间通过 API 进行通信。
+     */
+
+    /**
      * SpringBoot项目启动类备注
      *
      * SpringBoot启动类：文件只要加上@SpringBootApplication注解，就是启动类
@@ -45,6 +58,27 @@ public class FrameApplication {
      * 4、版本变化：mybatis plus 2.0版本：EntityWrapper
      *             mybatis plus 3.0版本：QueryWrapper
      *
+     * 5、关于session、cookie、sessionStorage、localStorage：
+     *      为什么选择localStorage来存放用户信息（比如token）：
+     *          session：session是存放在服务器上的，这就要求用户在不同时间访问的必须是同一台服务器，但这会在极
+     *              大程度上限制负载均衡的能力，所以不推荐
+     *          cookie：cookie是存放在浏览器的，也就是客户端，但cookie存在path概念，容易被破解，而且其大小限制
+     *              极小，只适合存放小数据，所以不推荐
+     *          sessionStorage：sessionStorage是存放在客户端的，但是只在当前窗口关闭前有效，达不到业务需求，所
+     *              以不推荐
+     *          localStorage：存放在客户端，满足了分布式的负载均衡；持久有效，满足了业务需求；可存放大数据，最多
+     *              为5M，适合存放登录凭证（token等）；安全性高，不会被破解。
+     *
+     * 6、string与int相互转换：
+     *      string => int：
+     *          1、Integer.valueOf(s).intValue()
+     *          2、Integer.parseInt(s)
+     *          注：效率（系统运行时间）：1 < 2
+     *      int => string：
+     *          1、String.valueOf(i)
+     *          2、Integer.toString(i)
+     *          3、i + ""
+     *          注：效率（系统运行时间）：1 < 2 < 3
      */
 
 }

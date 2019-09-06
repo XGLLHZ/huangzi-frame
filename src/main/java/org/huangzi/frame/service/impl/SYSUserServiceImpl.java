@@ -5,13 +5,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.huangzi.frame.config.ConstConfig;
 import org.huangzi.frame.entity.SYSRole;
+import org.huangzi.frame.entity.SYSToken;
 import org.huangzi.frame.entity.SYSUser;
 import org.huangzi.frame.entity.SYSUserRole;
+import org.huangzi.frame.mapper.SYSTokenMapper;
 import org.huangzi.frame.mapper.SYSUserMapper;
 import org.huangzi.frame.mapper.SYSUserRoleMapper;
 import org.huangzi.frame.service.SYSUserRoleService;
 import org.huangzi.frame.service.SYSUserService;
 import org.huangzi.frame.util.APIResponse;
+import org.huangzi.frame.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,6 +39,9 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
 
     @Autowired
     SYSUserRoleMapper sysUserRoleMapper;
+
+    @Autowired
+    SYSTokenMapper sysTokenMapper;
 
     SYSUserRoleService sysUserRoleService;
 
@@ -102,9 +108,23 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         boolean checkPass = bCryptPasswordEncoder.matches(sysUser.getUserPass(), sysUser1.getPassword());
         if (sysUser1 != null && checkPass) {
+
+            //登录判断成功时 创建或者修改token
+            String token = TokenUtil.createJWS(String.valueOf(sysUser1.getId()));
+            SYSToken sysToken = sysTokenMapper.selectOne(
+                    new QueryWrapper<SYSToken>().eq("user_id", sysUser1.getId()));
+            if (sysToken != null) {   //若此用户有过登录历史，则为其更新token
+                sysToken.setToken(token);
+                sysTokenMapper.updateById(sysToken);
+            } else {   //若无登录历史，则为其创建token
+                sysToken.setToken(token);
+                sysTokenMapper.insert(sysToken);
+            }
+
             Map<String, Object> data = new HashMap<>();
             sysUser1.setUserPass("");
             data.put("dataInfo", sysUser1);
+            data.put("token", token);
             return new APIResponse(data);
         } else {
             return new APIResponse(ConstConfig.RE_USERNAME_USERPWD_ERROR_CODE, ConstConfig.RE_USERNAME_USERPWD_ERROR_MESSAGE);

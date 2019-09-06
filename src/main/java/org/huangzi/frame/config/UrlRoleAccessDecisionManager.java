@@ -38,11 +38,6 @@ public class UrlRoleAccessDecisionManager implements AccessDecisionManager {
             String requestRole = configuration.getAttribute();
             //如果角色为 LOGIN_ROLE ，则说明当前的请求不需要任何角色，所以直接放过
             if ("LOGIN_ROLE".equals(requestRole)) {
-                /*if (authentication instanceof AnonymousAuthenticationToken) {
-                    throw new BadCredentialsException("请先登录！");
-                } else {
-                    return;
-                }*/
                 return;
             }
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();

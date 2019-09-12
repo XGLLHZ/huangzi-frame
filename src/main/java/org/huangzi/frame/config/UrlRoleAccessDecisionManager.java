@@ -38,6 +38,7 @@ public class UrlRoleAccessDecisionManager implements AccessDecisionManager {
             String requestRole = configuration.getAttribute();
             //如果角色为 LOGIN_ROLE ，则说明当前的请求不需要任何角色，所以直接放过
             if ("LOGIN_ROLE".equals(requestRole)) {
+                System.out.println("也是放行");
                 return;
             }
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();

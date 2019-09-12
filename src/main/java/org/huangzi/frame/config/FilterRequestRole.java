@@ -29,7 +29,10 @@ public class FilterRequestRole implements FilterInvocationSecurityMetadataSource
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
         //获取请求地址，如：admin/user/list
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
-        if ("/admin/user/login".equals(requestUrl)) {
+        System.out.println(requestUrl);
+        //如果请求地址为 /admin/user/login || /admin/user/login_code 则放行
+        if ("/admin/user/login".equals(requestUrl) || "/admin/user/login_code".equals(requestUrl)) {
+            System.out.println("如果返回 null 则放行");
             return null;
         }
         //获取所有权限（数据库中所有的url）及其对应的角色列表

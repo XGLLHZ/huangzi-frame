@@ -113,6 +113,14 @@
             <version>1.2.54</version>
         </dependency>
 
+        <!--发送邮件-->
+        <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+
         <!--JWT token相关-->
         <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api 编译环境 -->
         <dependency>

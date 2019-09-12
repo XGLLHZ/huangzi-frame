@@ -28,6 +28,7 @@ public class SYSUserController {
      */
     @RequestMapping("/list")
     public APIResponse list(@RequestBody SYSUser sysUser) {
+        System.out.println("访问接口");
         return sysUserService.list(sysUser);
     }
 
@@ -67,6 +68,7 @@ public class SYSUserController {
      */
     @RequestMapping("/login_code")
     public APIResponse loginCode() {
+        System.out.println("返回登录码");
         return new APIResponse(ConstConfig.RE_PLEASE_LOGIN_FIRST_CODE, ConstConfig.RE_PLEASE_LOGIN_FIRST_MESSAGE);
     }
 

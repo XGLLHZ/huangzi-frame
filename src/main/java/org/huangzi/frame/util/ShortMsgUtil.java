@@ -92,7 +92,7 @@ public class ShortMsgUtil {
 
     public static void main(String[] args) {
         SYSUser sysUser = new SYSUser();
-        sysUser.setUserAccount("13672022330");
+        sysUser.setUserAccount("13622119236");
         String[] code = RandomUtil.sixCodeArray();
         /*ShortMsgUtil.sendSMsgCodeALi(sysUser, code);*/
         ShortMsgUtil.sendSMsgCodeTXun(sysUser, code);

@@ -79,6 +79,10 @@ public class FrameApplication {
      *          2、Integer.toString(i)
      *          3、i + ""
      *          注：效率（系统运行时间）：1 < 2 < 3
+     *
+     * 7、SpringBoot 整合 spring security 时：
+     *          若使用了 .loginPage() 方法，则需要添加 SpringBoot 跨域配置
+     *
      */
 
 }

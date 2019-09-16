@@ -120,6 +120,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .exceptionHandling()
                 .accessDeniedHandler(permissionAccessDeniedHandler);
+        httpSecurity.csrf().disable();
     }
 
 }

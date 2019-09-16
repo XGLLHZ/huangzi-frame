@@ -12,7 +12,7 @@ import java.util.Properties;
 /**
  * @author: XGLLHZ
  * @date: 2019/9/12 16:43
- * @description: 邮件工具类
+ * @description: 邮件工具类（163）
  */
 public class EmailUtil {
 
@@ -25,7 +25,7 @@ public class EmailUtil {
     private static final String URL = "http://localhost:8081/api/admin/user/activate";   //激活链接地址
 
     /**
-     *邮件激活
+     *邮件激活 假设用户账号是邮箱
      * @param sysUser
      */
     public static void sendActivateLik(SYSUser sysUser) {
@@ -50,13 +50,12 @@ public class EmailUtil {
     }
 
     /**
-     * 邮件验证码
+     * 邮件验证码 假设用户账号是邮箱
      * @param sysUser
      */
-    public static void sendEmailCode(SYSUser sysUser) {
+    public static void sendEmailCode(SYSUser sysUser, String code) {
         Session session = getSession();
         MimeMessage message = new MimeMessage(session);
-        String code = RandomUtil.sixCode();
         try {
             String content = "<p>您好！</p>"
                     + "<p>&nbsp;&nbsp;&nbsp;&nbsp;欢迎加入香格里拉集团，您的验证码为：</p>"
@@ -97,8 +96,9 @@ public class EmailUtil {
         SYSUser sysUser = new SYSUser();
         sysUser.setId(1);
         sysUser.setUserAccount("13622119236@163.com");
+        String code =  RandomUtil.sixCode();
         /*EmailUtil.sendActivateLik(sysUser);*/
-        EmailUtil.sendEmailCode(sysUser);
+        EmailUtil.sendEmailCode(sysUser, code);
     }
 
 }

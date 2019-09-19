@@ -76,14 +76,14 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
     @Override
     public APIResponse insert(SYSUser sysUser) {
         SYSUser sysUser1 = sysUserMapper.selectOne(
-                new QueryWrapper<SYSUser>().eq("user_account", sysUser.getUserAccount()));
+                new QueryWrapper<SYSUser>().eq("username", sysUser.getUsername()));
         if (sysUser1 != null) {
             return new APIResponse(ConstConfig.RE_NAME_ALREADY_EXIST_ERROR_CODE,
                     ConstConfig.RE_NAME_ALREADY_EXIST_ERROR_MESSAGE);
         } else {
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            String password = bCryptPasswordEncoder.encode(sysUser.getUserPass());
-            sysUser.setUserPass(password);
+            String password = bCryptPasswordEncoder.encode(sysUser.getPassword());
+            sysUser.setPassword(password);
             sysUserMapper.insert(sysUser);
             List<SYSUserRole> list = new ArrayList<>();
             if (sysUser.getRoleIds() != null && sysUser.getRoleIds().length > 0) {
@@ -104,34 +104,45 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
         }
     }
 
+    /**
+     * 非系统用户登录
+     * @param sysUser
+     * @return
+     */
     @Override
     public APIResponse login(SYSUser sysUser) {
-        SYSUser sysUser1 = sysUserMapper.selectOne(
-                new QueryWrapper<SYSUser>().eq("user_account", sysUser.getUserAccount()));
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        boolean checkPass = bCryptPasswordEncoder.matches(sysUser.getUserPass(), sysUser1.getPassword());
-        if (sysUser1 != null && checkPass) {
+        /*SYSUser sysUser1 = sysUserMapper.selectOne(
+                new QueryWrapper<SYSUser>().eq("username", sysUser.getUsername()));
+        if (sysUser1!= null) {
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            boolean checkPass = bCryptPasswordEncoder.matches(sysUser.getPassword(), sysUser1.getPassword());
+            if (checkPass) {
+                //登录判断成功时 创建或者修改token
+                String token = sysTokenService.createToken(sysUser1.getId());
+                SYSToken sysToken = sysTokenMapper.selectOne(
+                        new QueryWrapper<SYSToken>().eq("user_id", sysUser1.getId()));
+                if (sysToken != null) {   //若此用户有过登录历史，则为其更新token
+                    sysToken.setToken(token);
+                    sysTokenMapper.updateById(sysToken);
+                } else {   //若无登录历史，则为其创建token
+                    SYSToken sysToken1 = new SYSToken();
+                    sysToken1.setUserId(sysUser1.getId());
+                    sysToken1.setToken(token);
+                    sysTokenMapper.insert(sysToken1);
+                }
 
-            //登录判断成功时 创建或者修改token
-            String token = sysTokenService.createToken(sysUser1.getId());
-            SYSToken sysToken = sysTokenMapper.selectOne(
-                    new QueryWrapper<SYSToken>().eq("user_id", sysUser1.getId()));
-            if (sysToken != null) {   //若此用户有过登录历史，则为其更新token
-                sysToken.setToken(token);
-                sysTokenMapper.updateById(sysToken);
-            } else {   //若无登录历史，则为其创建token
-                sysToken.setToken(token);
-                sysTokenMapper.insert(sysToken);
+                Map<String, Object> data = new HashMap<>();
+                sysUser1.setPassword("");
+                data.put("dataInfo", sysUser1);
+                data.put("token", token);
+                return new APIResponse(data);
+            } else {
+                return new APIResponse(ConstConfig.RE_USERNAME_USERPWD_ERROR_CODE, ConstConfig.RE_USERNAME_USERPWD_ERROR_MESSAGE);
             }
-
-            Map<String, Object> data = new HashMap<>();
-            sysUser1.setUserPass("");
-            data.put("dataInfo", sysUser1);
-            data.put("token", token);
-            return new APIResponse(data);
         } else {
-            return new APIResponse(ConstConfig.RE_USERNAME_USERPWD_ERROR_CODE, ConstConfig.RE_USERNAME_USERPWD_ERROR_MESSAGE);
-        }
+            return new APIResponse(ConstConfig.RE_USERNAME_ERROR_CODE, ConstConfig.RE_USERNAME_ERRORMESSAGE);
+        }*/
+        return new APIResponse();
     }
 
     @Override
@@ -173,7 +184,7 @@ public class SYSUserServiceImpl extends ServiceImpl<SYSUserMapper, SYSUser> impl
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         SYSUser sysUser = sysUserMapper.selectOne(
-                new QueryWrapper<SYSUser>().eq("user_account", userName));
+                new QueryWrapper<SYSUser>().eq("username", userName));
         if (sysUser != null) {
             List<SYSRole> list = sysUserMapper.userRoleList(sysUser.getId());
             sysUser.setList(list);

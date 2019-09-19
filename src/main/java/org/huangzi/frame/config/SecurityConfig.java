@@ -1,7 +1,11 @@
 package org.huangzi.frame.config;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.huangzi.frame.entity.SYSToken;
 import org.huangzi.frame.entity.SYSUser;
+import org.huangzi.frame.mapper.SYSTokenMapper;
+import org.huangzi.frame.service.SYSTokenService;
 import org.huangzi.frame.service.SYSUserService;
 import org.huangzi.frame.util.APIResponse;
 import org.huangzi.frame.util.SYSUserUtil;
@@ -48,6 +52,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     PermissionAccessDeniedHandler permissionAccessDeniedHandler;   //授权失败-权限不足
 
+    @Autowired
+    SYSTokenMapper sysTokenMapper;
+
+    @Autowired
+    SYSTokenService sysTokenService;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //获取当前登录用户，并用用户添加时的加密规则对用户密码解密（之前的加密规则已被 spring security 抛弃）
@@ -68,9 +78,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 }).and().formLogin()
                 .loginPage("/admin/user/login_code")   //在此接口中系统会返回一个 recode（105），前端根此返回码跳转到登录页
-                .loginProcessingUrl("/admin/user/login")   //登录接口
-                .usernameParameter("userAccount")   //系统-用户实体中的用户账号属性
-                .passwordParameter("userPass")   //系统-用户实体中的密码账号属性
+                .loginProcessingUrl("/admin/user/login")   //登录接口 实际上没有此接口，登录逻辑的处理 spring security 会自动处理
+                .usernameParameter("username")   //系统-用户实体中的用户账号属性
+                .passwordParameter("password")   //系统-用户实体中的密码账号属性
                 .failureHandler(new AuthenticationFailureHandler() {   //授权或决策失败时
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest request,
@@ -100,14 +110,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                                         HttpServletResponse response,
                                                         Authentication authentication) throws IOException, ServletException {
                         response.setContentType("application/json;charset=utf-8");
-                        //将用户信息返回
+
+                        //将用户信息和登录凭证（token）返回
                         SYSUser sysUser = SYSUserUtil.getCurrentUser();
-                        Map<String, Object> data = new HashMap<>();
-                        data.put("id", sysUser.getId());
-                        data.put("userAccount", sysUser.getUserAccount());
+                        //登陆成功后   创建或修改token
+                        String token = sysTokenService.createToken(sysUser.getId());
+                        //查找用户是否有登录历史
+                        SYSToken sysToken = sysTokenMapper.selectOne(
+                                new QueryWrapper<SYSToken>().eq("user_id", sysUser.getId())
+                        );
+                        if (sysToken != null) {   //如果有登录历史  则为其更新token
+                            sysToken.setToken(token);
+                            sysTokenMapper.updateById(sysToken);
+                        } else {   //若无登录历史  则创建新的token
+                            SYSToken sysToken1 = new SYSToken();
+                            sysToken1.setUserId(sysUser.getId());
+                            sysToken1.setToken(token);
+                            sysTokenMapper.insert(sysToken1);
+                        }
+                        Map<String, Object> map = new HashMap<>();
+                        sysUser.setToken(token);
+                        map.put("dataInfo", sysUser);
+
                         ObjectMapper objectMapper = new ObjectMapper();
                         PrintWriter out = response.getWriter();
-                        out.write(objectMapper.writeValueAsString(new APIResponse(data)));
+                        out.write(objectMapper.writeValueAsString(new APIResponse(map)));
                         out.flush();
                         out.close();
                     }

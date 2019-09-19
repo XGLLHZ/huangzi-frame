@@ -26,6 +26,9 @@ public class ConstConfig {
 
     /***************************登录、注册、注销相关*************************/
 
+    //用户名不存在
+    public static final Integer RE_USERNAME_ERROR_CODE = 100;
+    public static final String RE_USERNAME_ERRORMESSAGE = "用户不存在！";
     //登录失败---用户名或密码错误
     public static final Integer RE_USERNAME_USERPWD_ERROR_CODE = 101;
     public static final String RE_USERNAME_USERPWD_ERROR_MESSAGE = "用户名或密码错误！";

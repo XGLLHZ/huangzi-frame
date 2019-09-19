@@ -39,7 +39,7 @@ public class EmailUtil {
             message.setSubject("香格里拉集团 | 账号激活");   //邮件主题
             message.setSentDate(new Date());
             message.setFrom(new InternetAddress(FROM_ACCOUNT, FROM, "UTF-8"));
-            message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(sysUser.getUserAccount()));
+            message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(sysUser.getUsername()));
             message.setContent(content, "text/html;charset=gb2312");
             Transport.send(message);
         } catch (MessagingException e) {
@@ -63,7 +63,7 @@ public class EmailUtil {
             message.setSubject("香格里拉集团 | 验证码");   //邮件主题
             message.setSentDate(new Date());
             message.setFrom(new InternetAddress(FROM_ACCOUNT, FROM, "UTF-8"));
-            message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(sysUser.getUserAccount()));
+            message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(sysUser.getUsername()));
             message.setContent(content, "text/html;charset=gb2312");
             Transport.send(message);
         } catch (MessagingException e) {
@@ -95,7 +95,7 @@ public class EmailUtil {
     public static void main(String[] args) {
         SYSUser sysUser = new SYSUser();
         sysUser.setId(1);
-        sysUser.setUserAccount("13622119236@163.com");
+        sysUser.setUsername("13622119236@163.com");
         String code =  RandomUtil.sixCode();
         /*EmailUtil.sendActivateLik(sysUser);*/
         EmailUtil.sendEmailCode(sysUser, code);

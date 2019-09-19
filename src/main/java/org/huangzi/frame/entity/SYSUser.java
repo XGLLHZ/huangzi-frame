@@ -29,9 +29,9 @@ public class SYSUser extends BaseEntityUtil implements UserDetails {
     @TableId(type = IdType.AUTO)
     private Integer id;   //主键
 
-    private String userAccount;   //账号
+    private String username;   //账号
 
-    private String userPass;   //密码
+    private String password;   //密码
 
     private Integer deleteFlag;   //删除状态：0：未删除；1：已删除
 
@@ -58,12 +58,12 @@ public class SYSUser extends BaseEntityUtil implements UserDetails {
 
     @Override
     public String getPassword() {
-        return userPass;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return userAccount;
+        return username;
     }
 
     @Override

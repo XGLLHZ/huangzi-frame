@@ -55,7 +55,7 @@ public class ShortMsgUtil {
             DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", ALI_PRODUCT, ALI_PRODUCT_URL);
             IAcsClient iAcsClient = new DefaultAcsClient(iClientProfile);
             SendSmsRequest request = new SendSmsRequest();
-            request.setPhoneNumbers(sysUser.getUserAccount());
+            request.setPhoneNumbers(sysUser.getUsername());
             request.setSignName(ALI_SIGN_NAME);
             request.setTemplateCode(ALI_TEMPLATE_CODE);
             request.setTemplateParam("\"code\":\"" + code + "\"}");
@@ -82,7 +82,7 @@ public class ShortMsgUtil {
         try {
             SmsSingleSender smsSingleSender = new SmsSingleSender(TXUN_APP_ID, TXUN_APP_KEY);
             SmsSingleSenderResult smsSingleSenderResult = smsSingleSender.sendWithParam(TXUN_SMSG_CODE,
-                    sysUser.getUserAccount(), PRONHUB, code, TXUN_SIGN_NAME_ID, "", "");
+                    sysUser.getUsername(), PRONHUB, code, TXUN_SIGN_NAME_ID, "", "");
             result = smsSingleSenderResult.result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,7 +92,7 @@ public class ShortMsgUtil {
 
     public static void main(String[] args) {
         SYSUser sysUser = new SYSUser();
-        sysUser.setUserAccount("13622119236");
+        sysUser.setUsername("13622119236");
         String[] code = RandomUtil.sixCodeArray();
         /*ShortMsgUtil.sendSMsgCodeALi(sysUser, code);*/
         ShortMsgUtil.sendSMsgCodeTXun(sysUser, code);

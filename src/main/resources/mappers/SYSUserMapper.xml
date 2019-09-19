@@ -6,16 +6,16 @@
     <select id="list" resultType="SYSUser">
         select
           sysUser.id,
-          sysUser.user_account,
-          sysUser.user_pass,
+          sysUser.username,
+          sysUser.password,
           sysUser.delete_flag,
           sysUser.created_time,
           sysUser.update_time
         from sys_user sysUser
         where sysUser.delete_flag = 0
 
-        <if test=" condition.userAccount != null and condition.userAccount != '' ">
-            and sysUser.user_account like '%${ condition.userAccount }%'
+        <if test=" condition.username != null and condition.username != '' ">
+            and sysUser.username like '%${ condition.username }%'
         </if>
 
     </select>

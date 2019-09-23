@@ -18,21 +18,21 @@ import org.huangzi.frame.entity.SYSUser;
  */
 public class ShortMsgUtil {
 
-    private static final String ALI_PRODUCT = "Dysmsapi";   //产品名称
+    private static final String ALI_PRODUCT = "Dysmsapig";   //产品名称
 
-    private static final String ALI_PRODUCT_URL = "dysmsapi.aliyuncs.com";   //产品域名
+    private static final String ALI_PRODUCT_URL = "dysmsapig.aliyuncs.com";   //产品域名
 
-    private static final String ALI_ACCESS_KEY_ID = "LTAI4FhArnvkXAAn2ThGV9dv";   //key id
+    private static final String ALI_ACCESS_KEY_ID = "LTAI4FhArnvkXAAn2ThGV9dvg";   //key id
 
-    private static final String ALI_ACCESS_KEY_SECRET = "lg2RVU0TkjV19oyqrhh9UiiBtPy7Vu";   //key 密钥
+    private static final String ALI_ACCESS_KEY_SECRET = "lg2RVU0TkjV19oyqrhh9UiiBtPy7Vug";   //key 密钥
 
     private static final String ALI_SIGN_NAME = "人世间子";   //短信签名
 
-    private static final String ALI_TEMPLATE_CODE = "SMS_174023364";   //短信模板
+    private static final String ALI_TEMPLATE_CODE = "SMS_174023364g";   //短信模板
 
     private static final Integer TXUN_APP_ID = 1400258417;   //应用 app_id
 
-    private static final String TXUN_APP_KEY = "5efe519b58570b4e691a628cabae5f69";   //应用 app_key
+    private static final String TXUN_APP_KEY = "5efe519b58570b4e691a628cabae5f69g";   //应用 app_key
 
     private static final String TXUN_SIGN_NAME_ID = "人世间子";   //签名 id
 
@@ -82,7 +82,7 @@ public class ShortMsgUtil {
         try {
             SmsSingleSender smsSingleSender = new SmsSingleSender(TXUN_APP_ID, TXUN_APP_KEY);
             SmsSingleSenderResult smsSingleSenderResult = smsSingleSender.sendWithParam(TXUN_SMSG_CODE,
-                    sysUser.getUsername(), PRONHUB, code, TXUN_SIGN_NAME_ID, "", "");
+                    sysUser.getUsername(), TXUN_TEMPLATE_ID, code, TXUN_SIGN_NAME_ID, "", "");
             result = smsSingleSenderResult.result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,9 +93,10 @@ public class ShortMsgUtil {
     public static void main(String[] args) {
         SYSUser sysUser = new SYSUser();
         sysUser.setUsername("13622119236");
-        String[] code = RandomUtil.sixCodeArray();
+        /*String[] code = RandomUtil.sixCodeArray();*/
+        String[] code1 = {"n", "s", "n", "m", "n", "n"};
         /*ShortMsgUtil.sendSMsgCodeALi(sysUser, code);*/
-        ShortMsgUtil.sendSMsgCodeTXun(sysUser, code);
+        ShortMsgUtil.sendSMsgCodeTXun(sysUser, code1);
     }
 
 }

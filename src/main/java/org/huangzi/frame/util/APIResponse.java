@@ -28,7 +28,7 @@ public class APIResponse<T> {
     public APIResponse() {
         this.recode = ConstConfig.RE_SUCCESS_CODE;
         this.remsg = ConstConfig.RE_SUCCESS_MESSAGE;
-        body =(T) Collections.EMPTY_MAP;
+        body = (T) Collections.EMPTY_MAP;
     }
 
     /**
